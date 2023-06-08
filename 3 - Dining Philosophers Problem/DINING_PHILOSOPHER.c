@@ -118,8 +118,7 @@ int main()
     {
 
         // create philosopher processes
-        pthread_create(&thread_id[i], NULL,
-                       philosopher, &phil[i]);
+        pthread_create(&thread_id[i], NULL,philosopher, &phil[i]);
 
         printf("Philosopher %d is thinking\n", i + 1);
     }
