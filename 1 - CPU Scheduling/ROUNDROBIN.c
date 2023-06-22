@@ -1,49 +1,59 @@
 #include <stdio.h>
-#include<conio.h>
+struct process
+{
+    int burst, wait, comp, f;
+} p[20] = {0, 0};
 int main()
 {
-    int i, j, n, bu[10], wa[10], tat[10], t, ct[10], max;
-    float awt = 0, att = 0, temp = 0;
-
-    printf("Enter the no of processes -- ");
+    int n, i, j, totalwait = 0, totalturn = 0, quantum, flag = 1, time = 0;
+    printf("\nEnter The No Of Process :");
     scanf("%d", &n);
+    printf("\nEnter The Time Quantum  (in ms) :");
+    scanf("%d", &quantum);
     for (i = 0; i < n; i++)
     {
-        printf("\nEnter Burst Time for process %d -- ", i + 1);
-        scanf("%d", &bu[i]);
-        ct[i] = bu[i];
+        printf("Enter The Burst Time (in ms) For Process #%2d :", i + 1);
+        scanf("%d", &p[i].burst);
+        p[i].f = 1;
     }
-    printf("\nEnter the size of time slice -- ");
-    scanf("%d", &t);
-    max = bu[0];
-    for (i = 1; i < n; i++)
-        if (max < bu[i])
-            max = bu[i];
-    for (j = 0; j < (max / t) + 1; j++)
+    printf("\nOrder Of Execution \n");
+    printf("\nProcess Starting Ending Remaining");
+    printf("\n\t\tTime \tTime \t Time");
+    while (flag == 1)
+    {
+        flag = 0;
         for (i = 0; i < n; i++)
-            if (bu[i] != 0)
-                if (bu[i] <= t)
+        {
+            if (p[i].f == 1)
+            {
+                flag = 1;
+                j = quantum;
+                if ((p[i].burst - p[i].comp) > quantum)
                 {
-                    tat[i] = temp + bu[i];
-                    temp = temp + bu[i];
-                    bu[i] = 0;
+                    p[i].comp += quantum;
                 }
                 else
                 {
-                    bu[i] = bu[i] - t;
-                    temp = temp + t;
+                    p[i].wait = time - p[i].comp;
+                    j = p[i].burst - p[i].comp;
+                    p[i].comp = p[i].burst;
+                    p[i].f = 0;
                 }
+                printf("\nprocess # %-3d %-10d %-10d %-10d", i + 1, time, time + j, p[i].burst - p[i].comp);
+                time += j;
+            }
+        }
+    }
+    printf("\n\n------------------");
+    printf("\nProcess \t Waiting Time TurnAround Time ");
     for (i = 0; i < n; i++)
     {
-        wa[i] = tat[i] -
-                ct[i];
-        att += tat[i];
-        awt += wa[i];
+        printf("\nProcess # %-12d%-15d%-15d", i + 1, p[i].wait, p[i].wait + p[i].burst);
+        totalwait = totalwait + p[i].wait;
+        totalturn = totalturn + p[i].wait + p[i].burst;
     }
-    printf("\nThe Average Turnaround time is -- %f", att / n);
-    printf("\nThe Average Waiting time is -- %f ", awt / n);
-    printf("\n\tPROCESS\t BURST TIME \t WAITING TIME\tTURNAROUND TIME\n");
-    for (i = 0; i < n; i++)
-        printf("\t%d \t %d \t\t %d \t\t %d \n", i + 1, ct[i], wa[i], tat[i]);
-    getch();
+    printf("\n\nAverage\n------------------ ");
+    printf("\nWaiting Time: %fms", totalwait / (float)n);
+    printf("\nTurnAround Time : %fms\n\n", totalturn / (float)n);
+    return 0;
 }

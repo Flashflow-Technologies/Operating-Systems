@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-int f[50], i, k, j, inde[50], n, c, count = 0, p;
+int f[50], i, k, j, index[50], n, c, count = 0, p;
 int main()
 {
     for (i = 0; i < 50; i++)
@@ -21,19 +21,19 @@ x:
         goto x;
     }
     for (i = 0; i < n; i++)
-        scanf("%d", &inde[i]);
+        scanf("%d", &index[i]);
     for (i = 0; i < n; i++)
-        if (f[inde[i]] == 1)
+        if (f[index[i]] == 1)
         {
             printf("Block already allocated");
             goto x;
         }
     for (j = 0; j < n; j++)
-        f[inde[j]] = 1;
+        f[index[j]] = 1;
     printf("\n allocated");
     printf("\n file indexed");
     for (k = 0; k < n; k++)
-        printf("\n %d->%d:%d", p, inde[k], f[inde[k]]);
+        printf("\n %d->%d:%d", p, index[k], f[index[k]]);
     printf(" Enter 1 to enter more files and 0 to exit\t");
     scanf("%d", &c);
     if (c == 1)

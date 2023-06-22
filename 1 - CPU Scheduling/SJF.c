@@ -1,43 +1,44 @@
 #include <stdio.h>
-#include <conio.h>
-int main()
+#include <string.h>
+main()
 {
-    int p[20], bt[20], wt[20], tat[20], i, k, n, temp;
-    float wtavg,
-        tatavg;
-    //clrscr();
-    printf("\nEnter the number of processes -- ");
-    scanf("%d", &n);
+    int i = 0, processNumber[10], burstTime[10], n, waitTime[10], temp = 0, j, turnaroundTime[10];
+    float avgWaitTime, avgTat;
+    printf("\n Enter the no of process ");
+    scanf("\n %d", &n);
+    printf("\n Enter the burst time of each process");
     for (i = 0; i < n; i++)
     {
-        p[i] = i;
-        printf("Enter Burst Time for Process %d -- ", i);
-        scanf("%d", &bt[i]);
+        printf("\n p%d", i);
+        scanf("%d", &burstTime[i]);
     }
-    for (i = 0; i < n; i++)
-        for (k = i + 1; k < n; k++)
-            if (bt[i] > bt[k])
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (burstTime[i] > burstTime[j])
             {
-                temp = bt[i];
-                bt[i] = bt[k];
-                bt[k] = temp;
-                temp = p[i];
-                p[i] = p[k];
-                p[k] = temp;
+                temp = burstTime[i];
+                burstTime[i] = burstTime[j];
+                burstTime[j] = temp;
+                temp = processNumber[i];
+                processNumber[i] = processNumber[j];
+                processNumber[j] = temp;
             }
-    wt[0] = wtavg = 0;
-    tat[0] = tatavg = bt[0];
+        }
+    }
+    waitTime[0] = 0;
     for (i = 1; i < n; i++)
     {
-        wt[i] = wt[i - 1] + bt[i - 1];
-        tat[i] = tat[i - 1] + bt[i];
-        wtavg = wtavg + wt[i];
-        tatavg = tatavg + tat[i];
+        waitTime[i] = burstTime[i - 1] + waitTime[i - 1];
+        avgWaitTime = avgWaitTime + waitTime[i];
     }
-    printf("\n\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n");
+    printf("\n process no \t burst time\t waiting time \t turn around time\n");
     for (i = 0; i < n; i++)
-        printf("\n\t P%d \t\t %d \t\t %d \t\t %d", p[i], bt[i], wt[i], tat[i]);
-    printf("\nAverage Waiting Time -- %f", wtavg / n);
-    printf("\nAverage Turnaround Time -- %f", tatavg / n);
-    getch();
+    {
+        turnaroundTime[i] = burstTime[i] + waitTime[i];
+        avgTat += turnaroundTime[i];
+        printf("\n p%d\t\t%d\t\t%d\t\t%d", i, burstTime[i], waitTime[i], turnaroundTime[i]);
+    }
+    printf("\n\n\t Average waiting time%f\n\t Average turn around time%f", avgWaitTime, avgTat);
 }
