@@ -82,7 +82,7 @@ int main()
 // executed by only one thread at a
 // time i.e., only one thread enters
 // the critical section at a given time
-#pragma omp critical
+//#pragma omp critical
 
     for (i = 1; i > 0; i++)
     {
