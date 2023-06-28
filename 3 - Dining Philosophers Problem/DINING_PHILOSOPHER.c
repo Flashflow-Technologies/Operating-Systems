@@ -1,7 +1,7 @@
 #include<stdio.h> 
 #include<stdlib.h> 
 #include<pthread.h>
-#include<semaphore.h> 
+#include<semaphore.h>
 #include<unistd.h> 
 sem_t chopstick[5];
 void *philos(void *);
